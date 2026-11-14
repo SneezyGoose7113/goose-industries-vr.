@@ -11,7 +11,13 @@
       <a-entity meta-touch-controls="hand: left"></a-entity>
 
       <!-- RIGHT CONTROLLER -->
-      <a-entity meta-touch-controls="hand: right"></a-entity>
+   
+  <a-entity
+  id="rightController"
+  meta-touch-controls="hand: right"
+  raycaster="objects: .pickup; far: 3">
+</a-entity>
+      
 
       <!-- CAMERA AND DIAGNOSTIC -->
       <a-entity camera look-controls position="0 1.6 0">
@@ -29,10 +35,19 @@
         rotation="0 45 0"
         color="#4CC3D9">
       </a-box>
-
+<a-box
+  id="pickupCube"
+  class="pickup"
+  position="0 1.2 -2"
+  width="0.2"
+  height="0.2"
+  depth="0.2"
+  color="#0088FF">
+</a-box>
+      
       <a-plane position="0 0 -4"
         rotation="-90 0 0"
-        width="4"
+        width="20"
         height="4"
         color="#7BC8A4">
       </a-plane>
