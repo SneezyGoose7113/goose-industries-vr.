@@ -42,29 +42,50 @@
     </a-scene>
 
     <script>
-      const status = document.querySelector('#status');
+     
+const status = document.querySelector('#status');
 
-      function checkControllers() {
-        const gamepads = navigator.getGamepads();
-        let found = 0;
+let leftConnected = false;
+let rightConnected = false;
 
-        for (const gamepad of gamepads) {
-          if (gamepad && gamepad.connected) {
-            found++;
-          }
-        }
+function updateStatus() {
+  status.setAttribute(
+    'value',
+    'Left controller: ' + (leftConnected ? 'CONNECTED' : 'WAITING') +
+    '\nRight controller: ' + (rightConnected ? 'CONNECTED' : 'WAITING')
+  );
+}
 
-        status.setAttribute(
-          'value',
-          'Connected controllers: ' + found
-        );
-      }
+const leftController = document.querySelector(
+  '[meta-touch-controls="hand: left"]'
+);
 
-      setTimeout(() => {
-  checkControllers();
+const rightController = document.querySelector(
+  '[meta-touch-controls="hand: right"]'
+);
 
-  setInterval(checkControllers, 1000);
-}, 10000);
+leftController.addEventListener('controllerconnected', () => {
+  leftConnected = true;
+  updateStatus();
+});
+
+rightController.addEventListener('controllerconnected', () => {
+  rightConnected = true;
+  updateStatus();
+});
+
+leftController.addEventListener('controllerdisconnected', () => {
+  leftConnected = false;
+  updateStatus();
+});
+
+rightController.addEventListener('controllerdisconnected', () => {
+  rightConnected = false;
+  updateStatus();
+});
+
+updateStatus();
+
     </script>
 
   </body>
