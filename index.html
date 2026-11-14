@@ -60,7 +60,11 @@
         );
       }
 
-      setInterval(checkControllers, 1000);
+      setTimeout(() => {
+  checkControllers();
+
+  setInterval(checkControllers, 1000);
+}, 10000);
     </script>
 
   </body>
