@@ -48,7 +48,7 @@
       <a-plane position="0 0 -4"
         rotation="-90 0 0"
         width="20"
-        height="4"
+        height="20"
         color="#7BC8A4">
       </a-plane>
 
@@ -102,6 +102,53 @@ rightController.addEventListener('controllerdisconnected', () => {
 updateStatus();
 
     </script>
+
+<script>
+  const rightController =
+    document.querySelector('#rightController');
+
+  let heldObject = null;
+  let originalParent = null;
+
+  // Press the main trigger to pick up the cube.
+  rightController.addEventListener('triggerdown', () => {
+
+    if (heldObject) return;
+
+    const raycaster =
+      rightController.components.raycaster;
+
+    if (!raycaster) return;
+
+    const hits = raycaster.intersectedEls;
+
+    if (!hits.length) return;
+
+    const object = hits[0];
+
+    if (!object.classList.contains('pickup')) return;
+
+    heldObject = object;
+    originalParent = object.object3D.parent;
+
+    // Attach the object to the controller.
+    rightController.object3D.attach(object.object3D);
+
+  });
+
+  // Release the main trigger to drop the cube.
+  rightController.addEventListener('triggerup', () => {
+
+    if (!heldObject) return;
+
+    // Return the object to the scene.
+    originalParent.attach(heldObject.object3D);
+
+    heldObject = null;
+    originalParent = null;
+
+  });
+</script>
 
   </body>
 </html>
