@@ -15,7 +15,7 @@
   <a-entity
   id="rightController"
   meta-touch-controls="hand: right"
-  raycaster="objects: .pickup; far: 3">
+  raycaster="objects: .pickup; far: 3; showLine: true; lineColor: #FFFF00">
 </a-entity>
       
 
@@ -36,7 +36,7 @@
         color="#4CC3D9">
       </a-box>
 <a-box
-  id="pickupCube"
+  id="pickupCubeBlue"
   class="pickup"
   position="0 1.2 -2"
   width="0.2"
@@ -46,9 +46,9 @@
 </a-box>
       
   <a-box
-  id="pickupCube"
+  id="pickupCubeRed"
   class="pickup"
-  position="0 1.2 -5"
+  position="5 1.2 0"
   width="0.2"
   height="0.2"
   depth="0.2"
@@ -57,8 +57,8 @@
     
       <a-plane position="0 0 -4"
         rotation="-90 0 0"
-        width="1000"
-        height="1000"
+        width="500"
+        height="500"
         color="#7BC8A4">
       </a-plane>
       
@@ -120,20 +120,23 @@ updateStatus();
 
     </script>
 
+
 <script>
-  const rightController =
+  const pickupController =
     document.querySelector('#rightController');
 
-  let heldObject = null;
-  let originalParent = null;
+  const scene =
+    document.querySelector('a-scene');
 
-  // Press the main trigger to pick up the cube.
-  rightController.addEventListener('triggerdown', () => {
+  let heldObject = null;
+
+  // MAIN TRIGGER PRESSED
+  pickupController.addEventListener('triggerdown', () => {
 
     if (heldObject) return;
 
     const raycaster =
-      rightController.components.raycaster;
+      pickupController.components.raycaster;
 
     if (!raycaster) return;
 
@@ -146,26 +149,33 @@ updateStatus();
     if (!object.classList.contains('pickup')) return;
 
     heldObject = object;
-    originalParent = object.object3D.parent;
 
-    // Attach the object to the controller.
-    rightController.object3D.attach(object.object3D);
+    // Attach cube to the controller
+    pickupController.object3D.attach(
+      heldObject.object3D
+    );
+
+    // Position cube in front of controller
+    heldObject.object3D.position.set(0, 0, -0.25);
 
   });
 
-  // Release the main trigger to drop the cube.
-  rightController.addEventListener('triggerup', () => {
+  // MAIN TRIGGER RELEASED
+  pickupController.addEventListener('triggerup', () => {
 
     if (!heldObject) return;
 
-    // Return the object to the scene.
-    originalParent.attach(heldObject.object3D);
+    // Drop cube into the world
+    scene.object3D.attach(
+      heldObject.object3D
+    );
 
     heldObject = null;
-    originalParent = null;
 
   });
+
 </script>
+
 
   </body>
 </html>
