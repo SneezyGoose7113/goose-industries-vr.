@@ -79,12 +79,19 @@
       </a-entity>
 
       <!-- RIGHT CONTROLLER -->
-      <a-entity
-        id="rightController"
-        meta-touch-controls="hand: right"
-        raycaster="objects: .pickup; far: 3; showLine: true; lineColor: #FFFF00"
-        right-thumbstick-move="target: #playerRig; camera: #playerCamera; speed: 2">
-      </a-entity>
+      <!-- RIGHT CONTROLLER -->
+<a-entity
+  id="rightController"
+  meta-touch-controls="hand: right">
+
+  <!-- DOWNWARD-ANGLED GRABBING LASER -->
+  <a-entity
+    id="grabRay"
+    rotation="-20 0 0"
+    raycaster="objects: .pickup; far: 3; showLine: true; lineColor: #FFFF00">
+  </a-entity>
+
+</a-entity>
 
       <!-- CAMERA AND DIAGNOSTIC -->
       <a-entity
