@@ -219,60 +219,57 @@
 
   <!-- OBJECT PICKUP SCRIPT -->
   <script>
-    const pickupController =
-      document.querySelector('#rightController');
+  const pickupController =
+    document.querySelector('#rightController');
 
-    const scene =
-      document.querySelector('a-scene');
+  const grabRay =
+    document.querySelector('#grabRay');
 
-    let heldObject = null;
+  const scene =
+    document.querySelector('a-scene');
 
-    // MAIN TRIGGER PRESSED
-    pickupController.addEventListener('triggerdown', () => {
+  let heldObject = null;
 
-      if (heldObject) return;
+  // MAIN TRIGGER PRESSED
+  pickupController.addEventListener('triggerdown', () => {
 
-      const raycaster =
-        pickupController.components.raycaster;
+    if (heldObject) return;
 
-      if (!raycaster) return;
+    const raycaster = grabRay.components.raycaster;
 
-      const hits = raycaster.intersectedEls;
+    if (!raycaster) return;
 
-      if (!hits.length) return;
+    const hits = raycaster.intersectedEls;
 
-      const object = hits[0];
+    if (!hits.length) return;
 
-      if (!object.classList.contains('pickup')) return;
+    const object = hits[0];
 
-      heldObject = object;
+    if (!object.classList.contains('pickup')) return;
 
-      // Attach cube to controller
-      pickupController.object3D.attach(
-        heldObject.object3D
-      );
+    heldObject = object;
 
-      // Position cube in front of controller
-      heldObject.object3D.position.set(
-        0, 0, -0.25
-      );
+    pickupController.object3D.attach(
+      heldObject.object3D
+    );
 
-    });
+    heldObject.object3D.position.set(
+      0, 0, -0.25
+    );
+  });
 
-    // MAIN TRIGGER RELEASED
-    pickupController.addEventListener('triggerup', () => {
+  // MAIN TRIGGER RELEASED
+  pickupController.addEventListener('triggerup', () => {
 
-      if (!heldObject) return;
+    if (!heldObject) return;
 
-      // Drop cube into the world
-      scene.object3D.attach(
-        heldObject.object3D
-      );
+    scene.object3D.attach(
+      heldObject.object3D
+    );
 
-      heldObject = null;
-
-    });
-  </script>
+    heldObject = null;
+  });
+</script>
 
 </body>
 </html>
